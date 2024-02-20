@@ -13,6 +13,7 @@ LIBFT_LIB=${LIBFT_DIR}/libft.a
 
 SRC_FILES=	pipex.c	\
 			ft_command.c	\
+			ft_pipe.c		\
 			ft_error.c		
 
 OBJ_FILES=$(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
