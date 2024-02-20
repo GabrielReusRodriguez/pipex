@@ -1,0 +1,6 @@
+total 16
+-rw-rw-r-- 1 gabriel gabriel    5 feb 18 22:01 input.txt
+drwxrwxr-x 4 gabriel gabriel 4096 feb 18 21:52 libft
+-rw-rw-r-- 1 gabriel gabriel 1238 feb 18 21:56 Makefile
+-rw-rw-r-- 1 gabriel gabriel    0 feb 18 22:09 output.txt
+drwxrwxr-x 2 gabriel gabriel 4096 feb 18 21:56 src
