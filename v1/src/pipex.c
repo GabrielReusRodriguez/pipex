@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:56:50 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/21 00:05:08 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/23 00:08:19 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 #include "ft_error.h"
 #include "ft_get_next_line.h"
 #include "libft.h"
-
+#include "ft_command.h"
 
 static void	ft_pipex_read_input(const char * file_name, pid_t pid_soon,t_pipe _pipe)
 {
@@ -84,7 +84,7 @@ static void	ft_pipex_write_output(const char * file_name,t_pipe _pipe)
 	close(_pipe.rd_fd);
 }
 
-static void ft_pipex_execute_command(char **argv, int command, \
+static void ft_pipex_exec_soon(char **argv, int command, \
 				int total_commands, t_pipe _pipe)
 {
 	char	*line;
@@ -93,7 +93,7 @@ static void ft_pipex_execute_command(char **argv, int command, \
 	total_commands = total_commands;
 	close (_pipe.wr_fd);
 	line= argv[0];
-	//dup2(_pipe.rd_fd, 1);
+	dup2(_pipe.rd_fd, STDIN_FILENO);
 	while (line != NULL)
 	{
 		line = ft_get_next_line_many_fds(_pipe.rd_fd);
@@ -109,8 +109,17 @@ static void ft_pipex_execute_command(char **argv, int command, \
 	
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char *envp[])
 {
+
+	size_t	i;
+
+	i = 1;
+	while (i < (size_t)argc)
+	{
+		ft_execute_command(argv, i, argc);
+	}
+	/*
 	pid_t	pid;
 	t_pipe	_pipe;
 
@@ -131,4 +140,5 @@ int	main(int argc, char **argv)
 	else //Proceso padre
 		ft_pipex_read_input(argv[1], pid, _pipe);
 	return (0);
+*/
 }

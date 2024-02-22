@@ -1,7 +1,7 @@
 NAME=pipex
 #CDEBUG = -g3 -fsanitize=address
 CDEBUG = -g3
-CFLAGS=-Wall -Wextra -Werror ${CDEBUG}
+#CFLAGS=-Wall -Wextra -Werror -MMD -MP ${CDEBUG}
 
 SRC_DIR=./src
 OBJ_DIR=./obj
