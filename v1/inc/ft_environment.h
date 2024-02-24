@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_command.h                                       :+:      :+:    :+:   */
+/*   ft_environment.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 22:38:16 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/22 23:34:39 by gabriel          ###   ########.fr       */
+/*   Created: 2024/02/24 01:28:54 by gabriel           #+#    #+#             */
+/*   Updated: 2024/02/24 01:31:51 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_COMMAND_H
-# define FT_COMMAND_H
+#ifndef FT_ENVIRONMENT_H
+# define FT_ENVIRONTMENT_H
 
-# define WRITE_FD 1
-# define READ_FD 0
-
-void ft_execute_command(char **argv, int num_command, int total_command);
+char	**ft_env_get_path(char *envp[]);
 
 #endif

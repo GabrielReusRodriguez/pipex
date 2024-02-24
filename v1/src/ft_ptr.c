@@ -1,36 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   ft_ptr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 22:22:00 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/24 00:21:29 by gabriel          ###   ########.fr       */
+/*   Created: 2024/02/24 00:33:20 by gabriel           #+#    #+#             */
+/*   Updated: 2024/02/24 00:36:27 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include "ft_error.h"
-#include "libft.h"
+#include <stdlib.h>
+#include "ft_ptr.h"
 
-
-void	ft_error_print_errno(void)
+void	*ft_free_matrix(char	**matrix)
 {
-	perror("Error: ");
+	char    *ptr;
+	size_t  i;
+
+	if (matrix != NULL)
+	{
+		i = 0;
+		while (matrix[i] != NULL)
+		{
+			free (matrix[i]);
+			i++;
+		}
+		free (matrix);
+	}
+	return (NULL);
 }
 
-void	ft_error_print_str(const char *str)
+void	*ft_free_ptr(void *ptr)
 {
-	ft_putendl_fd(str,STDERR_FILENO);
-}
-
-void	ft_error_print_code(int code)
-{
-	char	*str;
-
-	str = strerror(code);
-	ft_putendl_fd(str,STDERR_FILENO);
+	if (ptr != NULL)
+		free (ptr);
+	return (NULL);
 }

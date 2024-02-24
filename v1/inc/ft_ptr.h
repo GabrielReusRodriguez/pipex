@@ -1,36 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   ft_ptr.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 22:22:00 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/24 00:21:29 by gabriel          ###   ########.fr       */
+/*   Created: 2024/02/24 00:32:00 by gabriel           #+#    #+#             */
+/*   Updated: 2024/02/24 00:38:19 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include "ft_error.h"
-#include "libft.h"
+#ifndef FT_PTR_H
+# define FT_PTR_H
 
+void	*ft_ptr_free_matrix(char	**ptr);
+void	*ft_ptr_free_ptr(void *ptr);
 
-void	ft_error_print_errno(void)
-{
-	perror("Error: ");
-}
-
-void	ft_error_print_str(const char *str)
-{
-	ft_putendl_fd(str,STDERR_FILENO);
-}
-
-void	ft_error_print_code(int code)
-{
-	char	*str;
-
-	str = strerror(code);
-	ft_putendl_fd(str,STDERR_FILENO);
-}
+#endif

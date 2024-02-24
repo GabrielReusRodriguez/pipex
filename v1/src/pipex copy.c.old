@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:56:50 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/24 02:03:21 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/24 01:47:55 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,41 +16,22 @@
 #include "ft_error.h"
 #include "ft_pipe.h"
 #include "ft_environment.h"
+
+
+/*
+#include <stdlib.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <errno.h>
+#include "ft_pipe.h"
+#include "ft_error.h"
+#include "ft_get_next_line.h"
 #include "libft.h"
-#include "ft_process.h"
-
-static t_list	*ft_create_process_list(char **commands, int total_commands, \
-					char **path)
-{
-	t_list		*cmd_list;
-	t_list		*node;
-	t_process	*proc;
-	size_t		i;
-
-	cmd_list = NULL;
-	i = 0;
-	while (i < total_commands)
-	{
-		proc = ft_process_new(commands[i],path);
-		if (proc == NULL)
-		{
-			ft_lstclear(&cmd_list, &ft_process_destroy);
-			ft_error_print_str("Error\nError creating t_process");
-			return (NULL);
-		}
-		node = ft_lstnew(proc);
-		if (node == NULL)
-		{
-			ft_process_destroy(proc);
-			ft_lstclear(&cmd_list, &ft_process_destroy);
-			ft_error_print_str("Error\nError creating t_process node");
-			return (NULL);
-		}
-		ft_lstadd_back(&cmd_list, proc);
-	}
-	return(cmd_list);
-}
-
+#include "ft_command.h"
+*/
 
 static void	ft_pipex_read_input(const char * file_name, pid_t pid_soon,t_pipe _pipe)
 {
@@ -113,6 +94,34 @@ static void	ft_pipex_write_output(const char * file_name,t_pipe _pipe)
 	close(_pipe.rd_fd);
 }
 
+/*
+static void ft_pipex_exec_soon(char **argv, int command, \
+				int total_commands, t_pipe _pipe)
+{
+	char	*line;
+
+	command = command;
+	total_commands = total_commands;
+	close (_pipe.wr_fd);
+	line= argv[0];
+	dup2(_pipe.rd_fd, STDIN_FILENO);
+	while (line != NULL)
+	{
+		line = ft_get_next_line_many_fds(_pipe.rd_fd);
+		//line = ft_get_next_line_many_fds(1);
+		if(line != NULL)
+		{
+			printf("PRoceso hijo valor del string: %s",line);
+			free (line);
+		}
+	}
+	close(_pipe.rd_fd);
+	printf("FIN\n");
+	
+}
+*/
+
+
 int	main(int argc, char **argv, char *envp[])
 {
 	size_t	i;
@@ -130,4 +139,26 @@ int	main(int argc, char **argv, char *envp[])
 		ft_execute_command(argv, i, argc);
 	}
 	return (0);
+	/*
+	pid_t	pid;
+	t_pipe	_pipe;
+
+	if(argc < 2)
+	{
+		ft_error_print_str("Bad  number of arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	_pipe = ft_pipe_new();
+	pid = fork();
+	if ( pid == -1)
+	{
+		ft_error_print_code(errno);
+		exit(EXIT_FAILURE);
+	}
+	if(pid == 0) //Proceso Hijo
+		ft_pipex_execute_command(argv, 1, argc, _pipe);
+	else //Proceso padre
+		ft_pipex_read_input(argv[1], pid, _pipe);
+	return (0);
+*/
 }

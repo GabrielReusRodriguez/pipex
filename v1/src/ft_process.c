@@ -1,15 +1,103 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_command.c                                       :+:      :+:    :+:   */
+/*   ft_process.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:39:08 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/23 00:05:17 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/24 02:08:03 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
+#include "ft_process.h"
+#include "ft_error.h"
+#include "ft_pipe.h"
+#include "libft.h"
+#include "ft_ptr.h"
+
+//void		ft_command_execute(t_command command);
+static char	*ft_process_get_exec(const char *command)
+{
+	char	*exec;
+	char	**splitted_str;
+	
+	splitted_str = ft_split(command, ' ');
+	if (splitted_str == NULL)
+		return (NULL);
+	exec = ft_strdup(splitted_str[0]);
+	if (exec == NULL)
+		return (ft_ptr_free_matrix(splitted_str));
+	return (exec);	
+}
+
+static t_process	*ft_process_create(void)
+{
+	t_process	*proc;
+	
+	proc = (t_process *)malloc(sizeof(t_process));
+	if (proc == NULL)
+	{
+		ft_error_print_str("Error\nError at malloc of process");
+		return (NULL);
+	}
+	proc->path = NULL;
+	proc->exec  = NULL;
+	proc->params = NULL;
+	return (proc);
+}
+
+t_process	*ft_process_new(const char *command, const char **path)
+{
+	t_process	*proc;
+	
+	proc = ft_process_create();
+	if (proc == NULL)
+		return (NULL);
+	proc->pipe = ft_pipe_new();
+	if (proc->pipe.rd_fd < 0 || proc->pipe.wr_fd < 0)
+	{
+		ft_process_destroy(proc);
+		return (NULL);
+	}
+	proc->path = path;
+	proc->params = command;
+	proc->exec = ft_process_get_exec(command);
+	if (proc->exec == NULL)
+	{
+		ft_process_destroy(proc);
+		return (NULL);
+	}
+	return (proc);	
+}
+
+
+void		ft_process_destroy(void	*ptr)
+{
+	t_process	*proc;
+
+	if (ptr != NULL)
+	{
+		proc = (t_process *)ptr;
+		if (proc->exec != NULL)
+			free (proc->exec);
+		ft_ptr_free_matrix(proc->path);
+//		if (com->env != NULL)
+//			free (com->env);
+//		if (com->params != NULL)
+//			free (com->params);
+		free (proc);
+	}
+}
+
+void    ft_process_execute(t_process *process)
+{
+    
+}
+
+
+/*
 #include <unistd.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -71,7 +159,7 @@ void ft_execute_command(char **argv, int num_command, int total_command)
 		exit(EXIT_FAILURE);
 	}
 }
-
+*/
 
 /*
 void	ft_command_execute_parent(int fds[2], const char **command, int num_command, int total_command)
