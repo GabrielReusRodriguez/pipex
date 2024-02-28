@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:56:50 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/24 02:03:21 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/28 22:36:27 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,40 @@
 #include "libft.h"
 #include "ft_process.h"
 
+#include <stdio.h>
+#include <unistd.h>
+
+int	main(int argc, char **argv, char *envp[])
+{
+	size_t		i;
+	char		**path_folders;
+	char		*environment;
+	t_process	*process;
+
+	
+	if (argc != 5)
+	{
+		ft_error_print_str("Error\nBad number of argumennts");
+		return (1);
+	}
+	path_folders = ft_env_get_path(envp);
+	process = ft_process_new(argv[1], (const char **)path_folders, ft_pipe_new(), ft_pipe_new());
+	ft_process_execute(process);
+/*
+	i = 2;
+	while (i < (size_t)argc)
+	{
+		ft_execute_command(argv, i, argc);
+	}
+*/
+	return (0);
+}
+
+
+
+/*
 static t_list	*ft_create_process_list(char **commands, int total_commands, \
-					char **path)
+					const char **path)
 {
 	t_list		*cmd_list;
 	t_list		*node;
@@ -31,7 +63,7 @@ static t_list	*ft_create_process_list(char **commands, int total_commands, \
 	i = 0;
 	while (i < total_commands)
 	{
-		proc = ft_process_new(commands[i],path);
+		proc = ft_process_new(commands[i], path);
 		if (proc == NULL)
 		{
 			ft_lstclear(&cmd_list, &ft_process_destroy);
@@ -112,22 +144,4 @@ static void	ft_pipex_write_output(const char * file_name,t_pipe _pipe)
 	close(fd);
 	close(_pipe.rd_fd);
 }
-
-int	main(int argc, char **argv, char *envp[])
-{
-	size_t	i;
-	char	**path_folders;
-	
-	if (argc != 5)
-	{
-		ft_error_print_str("Error\nBad number of argumennts");
-		return (1);
-	}
-	path_folders = ft_env_get_path(envp);
-	i = 2;
-	while (i < (size_t)argc)
-	{
-		ft_execute_command(argv, i, argc);
-	}
-	return (0);
-}
+*/

@@ -6,30 +6,29 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:39:08 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/24 02:08:03 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/28 23:15:49 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <unistd.h>
 #include "ft_process.h"
 #include "ft_error.h"
 #include "ft_pipe.h"
 #include "libft.h"
 #include "ft_ptr.h"
 
-//void		ft_command_execute(t_command command);
-static char	*ft_process_get_exec(const char *command)
+#include <stdio.h>
+
+
+static char	**ft_process_parse_cmd(const char *command)
 {
-	char	*exec;
 	char	**splitted_str;
 	
 	splitted_str = ft_split(command, ' ');
 	if (splitted_str == NULL)
 		return (NULL);
-	exec = ft_strdup(splitted_str[0]);
-	if (exec == NULL)
-		return (ft_ptr_free_matrix(splitted_str));
-	return (exec);	
+	return (splitted_str);	
 }
 
 static t_process	*ft_process_create(void)
@@ -48,30 +47,25 @@ static t_process	*ft_process_create(void)
 	return (proc);
 }
 
-t_process	*ft_process_new(const char *command, const char **path)
+t_process	*ft_process_new(const char *command, const char **path, \
+				t_pipe in, t_pipe out)
 {
 	t_process	*proc;
+	char		**splitted_command;
 	
+	splitted_command = ft_process_parse_cmd(command);
+	if (splitted_command == NULL)
+		return (ft_ptr_free_matrix(splitted_command));
 	proc = ft_process_create();
 	if (proc == NULL)
 		return (NULL);
-	proc->pipe = ft_pipe_new();
-	if (proc->pipe.rd_fd < 0 || proc->pipe.wr_fd < 0)
-	{
-		ft_process_destroy(proc);
-		return (NULL);
-	}
-	proc->path = path;
-	proc->params = command;
-	proc->exec = ft_process_get_exec(command);
-	if (proc->exec == NULL)
-	{
-		ft_process_destroy(proc);
-		return (NULL);
-	}
+	proc->pipe_in = in;
+	proc->pipe_out = out;
+	proc->path = (char **)path;
+	proc->params = splitted_command;
+	proc->exec = splitted_command[0];
 	return (proc);	
 }
-
 
 void		ft_process_destroy(void	*ptr)
 {
@@ -83,17 +77,29 @@ void		ft_process_destroy(void	*ptr)
 		if (proc->exec != NULL)
 			free (proc->exec);
 		ft_ptr_free_matrix(proc->path);
-//		if (com->env != NULL)
-//			free (com->env);
-//		if (com->params != NULL)
-//			free (com->params);
+		ft_ptr_free_matrix(proc->params);
 		free (proc);
 	}
 }
 
 void    ft_process_execute(t_process *process)
-{
-    
+{	
+	char    *exec;
+	char    *path;
+	size_t	i;
+
+	i = 0;
+	while (process->path[i] != NULL)
+	{
+		exec = ft_strjoin(process->path[i], process->exec);
+		if(access(exec, X_OK) == 0)
+		{
+			if (execve(exec, (char * const *)process->params,NULL) < 0)
+				ft_error_print_errno();
+			return ;
+		}
+		i++;
+	}
 }
 
 
@@ -136,9 +142,9 @@ void ft_execute_command(char **argv, int num_command, int total_command)
 
 
 	char *args[]     = { "ls", "-l", "-a", NULL };
-    char *env_args[] = { "PATH=/bin", "USER=me", NULL };
+	char *env_args[] = { "PATH=/bin", "USER=me", NULL };
 
-    execve(args[0], args, env_args);
+	execve(args[0], args, env_args);
 	execvp(args[0], &args[0]);
 	
 	envp = ft_get_env_vars();

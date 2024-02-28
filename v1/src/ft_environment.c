@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 01:31:03 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/24 01:36:58 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/28 22:24:02 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,40 @@
 #include "ft_ptr.h"
 #include "libft.h"
 
-static char    **ft_env_split_path(const char *path)
+static char *ft_env_add_slash(char *folder)
 {
-    char    **folders;
+	char	*path;
+	
+	path = ft_strjoin(folder, "/");
+	if (path == NULL)
+		return (NULL);
+	free(folder);
+	return (path);
+}
 
-    folders = ft_split(path,':');
-    return (folders);
+static char	**ft_env_split_path(const char *path)
+{
+	char    **folders;
+	char    *aux;
+	size_t  i;
+
+	folders = ft_split(path,':');
+	if (folders == NULL)
+		return (NULL);
+	i = 0;
+	while (folders[i] != NULL)
+	{
+		aux = folders[i];
+		aux = ft_env_add_slash(aux);
+		if (aux == NULL)
+		{
+			ft_ptr_free_matrix(folders);
+			return (NULL);
+		}
+		folders[i] = aux;
+		i++;
+	}
+	return (folders);
 }
 
 char	**ft_env_get_path(char *envp[])
@@ -38,12 +66,12 @@ char	**ft_env_get_path(char *envp[])
 			{
 				len = ft_strlen(envp[i]);
 				env = ft_substr(envp[i],4,len - 4);
-                if(len == NULL)
-                    return (NULL);
-                path = ft_env_split_path(env);
-                if (path == NULL)
-                    return (ft_ptr_free_ptr(env));
-                return (path);
+				if(env == NULL)
+					return (NULL);
+				path = ft_env_split_path(env);
+				if (path == NULL)
+					return (ft_ptr_free_ptr(env));
+				return (path);
 			}
 			i++;
 		}

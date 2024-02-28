@@ -11,10 +11,13 @@ LIBFT_DIR=./libft
 LIBFT_INC_DIR=${LIBFT_DIR}/inc
 LIBFT_LIB=${LIBFT_DIR}/libft.a
 
-SRC_FILES=	pipex.c	\
-			ft_command.c	\
-			ft_pipe.c		\
-			ft_error.c		
+SRC_FILES=	pipex.c				\
+			ft_command.c		\
+			ft_environment.c	\
+			ft_error.c			\
+			ft_pipe.c			\
+			ft_process.c		\
+			ft_ptr.c
 
 OBJ_FILES=$(SRC_FILES:%.c=$(OBJ_DIR)/%.o)
 DEP_FILES=$(SRC_FILES:%.c=$(OBJ_DIR)/%.d)
