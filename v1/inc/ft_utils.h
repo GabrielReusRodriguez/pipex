@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pipe.h                                          :+:      :+:    :+:   */
+/*   ft_utils.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 23:05:10 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/29 23:16:00 by gabriel          ###   ########.fr       */
+/*   Created: 2024/02/29 21:28:17 by gabriel           #+#    #+#             */
+/*   Updated: 2024/02/29 23:04:51 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PIPE_H
-# define FT_PIPE_H
+#ifndef FT_UTILS_H
+# define FT_UTILS_H
 
-# include "ft_utils.h"
+typedef unsigned char   t_bool;
 
-typedef struct s_pipe
+typedef struct s_main_params
 {
-	int	rd_fd;
-	int	wr_fd;
-}	t_pipe;
+	int argc;
+	char **argv;
+	char **envp;
+}   t_main_params;
 
-t_pipe	ft_pipe_new(void);
-t_bool  ft_pipe_check(t_pipe pipe);
+# define TRUE 1
+# define FALSE 0
 
-t_pipe	*ft_pipelist_create(size_t num_pipes);
-void    *ft_pipelist_destroy(t_pipe *, size_t num_pipes);
+t_main_params	ft_utils_create_params(int argc, char**argv, char *envp[]);
 
 
 #endif

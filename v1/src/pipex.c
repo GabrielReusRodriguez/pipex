@@ -6,135 +6,61 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 21:56:50 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/28 22:36:27 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/29 23:25:29 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "ft_error.h"
-#include "ft_pipe.h"
-#include "ft_environment.h"
-#include "libft.h"
-#include "ft_process.h"
-
-#include <stdio.h>
 #include <unistd.h>
+#include "ft_environment.h"
+#include "ft_error.h"
+#include "ft_get_next_line.h"
+#include "libft.h"
+#include "ft_pipe.h"
+#include "ft_process.h"
+#include "ft_utils.h"
 
-int	main(int argc, char **argv, char *envp[])
-{
-	size_t		i;
-	char		**path_folders;
-	char		*environment;
-	t_process	*process;
-
-	
-	if (argc != 5)
-	{
-		ft_error_print_str("Error\nBad number of argumennts");
-		return (1);
-	}
-	path_folders = ft_env_get_path(envp);
-	process = ft_process_new(argv[1], (const char **)path_folders, ft_pipe_new(), ft_pipe_new());
-	ft_process_execute(process);
-/*
-	i = 2;
-	while (i < (size_t)argc)
-	{
-		ft_execute_command(argv, i, argc);
-	}
-*/
-	return (0);
-}
-
-
-
-/*
-static t_list	*ft_create_process_list(char **commands, int total_commands, \
-					const char **path)
-{
-	t_list		*cmd_list;
-	t_list		*node;
-	t_process	*proc;
-	size_t		i;
-
-	cmd_list = NULL;
-	i = 0;
-	while (i < total_commands)
-	{
-		proc = ft_process_new(commands[i], path);
-		if (proc == NULL)
-		{
-			ft_lstclear(&cmd_list, &ft_process_destroy);
-			ft_error_print_str("Error\nError creating t_process");
-			return (NULL);
-		}
-		node = ft_lstnew(proc);
-		if (node == NULL)
-		{
-			ft_process_destroy(proc);
-			ft_lstclear(&cmd_list, &ft_process_destroy);
-			ft_error_print_str("Error\nError creating t_process node");
-			return (NULL);
-		}
-		ft_lstadd_back(&cmd_list, proc);
-	}
-	return(cmd_list);
-}
-
-
-static void	ft_pipex_read_input(const char * file_name, pid_t pid_soon,t_pipe _pipe)
+static void	ft_pipex_read_input(const char * file_name, t_pipe out_pipe)
 {
 	int		status;
 	int 	fd;
 	char	*line;
-	//size_t	len;
 
-	close (_pipe.rd_fd);
+	close (out_pipe.rd_fd);
 	fd = open(file_name, O_RDONLY);
 	if (fd < 0)
-	{
-		ft_error_print_code(errno);
-		exit(EXIT_FAILURE);
-	}
+		ft_error_print_errno();
 	line = "";
-//	dup2(_pipe.wr_fd, 1);
+	dup2(out_pipe.wr_fd, STDIN_FILENO);
 	while ( line != NULL)
 	{
 		line = ft_get_next_line_many_fds(fd);
 		if (line != NULL)
 		{
-			//len = ft_strlen(line);
-			//write(_pipe.wr_fd, line,len);
-			ft_putstr_fd(line, _pipe.wr_fd);
+			ft_putstr_fd(line, out_pipe.wr_fd);
 			free(line);
 		}
 	}
 	close(fd);
-	close(_pipe.wr_fd);
-	printf("wating...\n");
-	waitpid(pid_soon, &status, 0);
-	printf("FIN wating...\n");
+	close(out_pipe.wr_fd);
+//	waitpid(pid_soon, &status, 0);
 }
 
-static void	ft_pipex_write_output(const char * file_name,t_pipe _pipe)
+static void	ft_pipex_write_output(const char * file_name,t_pipe in_pipe)
 {
 	int 	fd;
 	char	*line;
 
-	close (_pipe.wr_fd);
+	close (in_pipe.wr_fd);
 	fd = open(file_name, O_WRONLY | O_CREAT, 744);
 	if (fd < 0)
-	{
-		ft_error_print_code(errno);
-		exit(EXIT_FAILURE);
-	}
+		ft_error_print_errno();
 	line = "";
-//	dup2(_pipe.wr_fd, 1);
+	//dup2(in_pipe.rd_fd, fd);
 	while ( line != NULL)
 	{
-		line = ft_get_next_line_many_fds(_pipe.rd_fd);
+		line = ft_get_next_line_many_fds(in_pipe.rd_fd);
 		if (line != NULL)
 		{
 			ft_putstr_fd(line, fd);
@@ -142,6 +68,42 @@ static void	ft_pipex_write_output(const char * file_name,t_pipe _pipe)
 		}
 	}
 	close(fd);
-	close(_pipe.rd_fd);
+	close(in_pipe.rd_fd);
 }
-*/
+
+static	void ft_execute_commands(t_main_params params, const char **path, \
+		t_pipe *pipes)
+{
+	size_t 		i;
+	t_process	*process;
+	
+	i = 2;
+	while (i < (size_t)params.argc)
+	{
+		process = ft_process_new(params.argv[i], path, pipes, i);
+		ft_process_execute(process, i, params);
+		ft_process_destroy(process);
+		i++;
+	}
+}
+
+int	main(int argc, char **argv, char *envp[])
+{
+	t_main_params	params;
+	char			**path_folders;
+	t_pipe			*v_pipes;
+	t_process		*process;
+	size_t			num_pipes;
+
+	params = ft_utils_create_params(argc, argv, envp);
+	if (params.argc <= 5)
+		ft_error_print_str("Error\nBad number of arguments\n");
+	num_pipes = params.argc - 3;
+	path_folders = ft_env_get_path(params.envp);
+	v_pipes = ft_pipelist_create(num_pipes);
+	if (v_pipes == NULL)
+		ft_error_print_str("Error\nError in malloc\n");
+	ft_execute_commands(params, (const char **)path_folders, v_pipes);
+	ft_pipelist_destroy(v_pipes, num_pipes);
+	return (0);
+}

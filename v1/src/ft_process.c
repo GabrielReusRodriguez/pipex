@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:39:08 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/28 23:15:49 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/29 22:58:11 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 static char	**ft_process_parse_cmd(const char *command)
 {
 	char	**splitted_str;
-	
+	printf("parssed cmd = _%s_\n",command);
 	splitted_str = ft_split(command, ' ');
 	if (splitted_str == NULL)
 		return (NULL);
@@ -48,19 +48,19 @@ static t_process	*ft_process_create(void)
 }
 
 t_process	*ft_process_new(const char *command, const char **path, \
-				t_pipe in, t_pipe out)
+				t_pipe *pipes, size_t i)
 {
 	t_process	*proc;
 	char		**splitted_command;
-	
+
 	splitted_command = ft_process_parse_cmd(command);
 	if (splitted_command == NULL)
 		return (ft_ptr_free_matrix(splitted_command));
 	proc = ft_process_create();
 	if (proc == NULL)
 		return (NULL);
-	proc->pipe_in = in;
-	proc->pipe_out = out;
+	proc->pipe_in = pipes[i * 2];
+	proc->pipe_out = pipes[i * 2 + 1];
 	proc->path = (char **)path;
 	proc->params = splitted_command;
 	proc->exec = splitted_command[0];
@@ -74,15 +74,16 @@ void		ft_process_destroy(void	*ptr)
 	if (ptr != NULL)
 	{
 		proc = (t_process *)ptr;
-		if (proc->exec != NULL)
-			free (proc->exec);
+//		if (proc->exec != NULL)
+//			free (proc->exec);
 		ft_ptr_free_matrix(proc->path);
 		ft_ptr_free_matrix(proc->params);
 		free (proc);
 	}
 }
 
-void    ft_process_execute(t_process *process)
+void    ft_process_execute(t_process *process, size_t num_proc, \
+			t_main_params params)
 {	
 	char    *exec;
 	char    *path;

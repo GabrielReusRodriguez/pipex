@@ -6,10 +6,11 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 01:31:03 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/28 22:24:02 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/02/29 00:29:19 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <stdlib.h>
 #include "ft_ptr.h"
 #include "libft.h"
@@ -18,10 +19,9 @@ static char *ft_env_add_slash(char *folder)
 {
 	char	*path;
 	
+	printf("folder: _%s_\n",folder);
 	path = ft_strjoin(folder, "/");
-	if (path == NULL)
-		return (NULL);
-	free(folder);
+	free (folder);
 	return (path);
 }
 
@@ -69,8 +69,7 @@ char	**ft_env_get_path(char *envp[])
 				if(env == NULL)
 					return (NULL);
 				path = ft_env_split_path(env);
-				if (path == NULL)
-					return (ft_ptr_free_ptr(env));
+				free (env);
 				return (path);
 			}
 			i++;
