@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:22:00 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/29 21:47:32 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/03 20:57:26 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@
 void	ft_error_print_errno(void)
 {
 	perror("Error: ");
-	exit(EXIT_FAILURE);
+	//exit(EXIT_FAILURE);
 }
 
 void	ft_error_print_str(const char *str)
 {
 	ft_putendl_fd((char *)str,STDERR_FILENO);
-	exit(EXIT_FAILURE);
+	//exit(EXIT_FAILURE);
 }
 
 void	ft_error_print_code(int code)
@@ -36,5 +36,5 @@ void	ft_error_print_code(int code)
 
 	str = strerror(code);
 	ft_putendl_fd(str,STDERR_FILENO);
-	exit(EXIT_FAILURE);
+	//exit(EXIT_FAILURE);
 }
