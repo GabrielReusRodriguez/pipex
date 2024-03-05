@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/15 22:08:23 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/06 00:35:54 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/06 00:45:07 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	ft_exec_cmd (char *cmd, char **env, char **path)
 	exit(EXIT_SUCCESS);
 }
 
-void	ft_exec_cmd_and_redir (char *cmd, char **env, int fdin, char **path)
+void	ft_exec_redir_and_cmd (char *cmd, char **env, int fdin, char **path)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -178,7 +178,7 @@ int	main (int argc, char **argv, char **env)
 		fdout = ft_openfile(argv[4], OUTFILE);
 		dup2(fdin, STDIN_FILENO);
 		dup2(fdout, STDOUT_FILENO);
-		ft_exec_cmd_and_redir(argv[2], env, fdin, path);
+		ft_exec_redir_and_cmd(argv[2], env, fdin, path);
 		ft_exec_cmd(argv[3], env, path);
 		close (fdin);
 		close (fdout);
