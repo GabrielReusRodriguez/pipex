@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 00:33:20 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/28 21:29:07 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/06 00:18:30 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 
 void	*ft_ptr_free_matrix(char	**matrix)
 {
-	char    *ptr;
-	size_t  i;
+    size_t  i;
 
 	if (matrix != NULL)
 	{

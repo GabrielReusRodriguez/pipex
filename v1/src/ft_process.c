@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:39:08 by gabriel           #+#    #+#             */
-/*   Updated: 2024/03/03 23:00:49 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/05 22:17:59 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 static char	**ft_process_parse_cmd(const char *command)
 {
 	char	**splitted_str;
-	printf("parssed cmd = _%s_\n",command);
 	splitted_str = ft_split(command, ' ');
 	if (splitted_str == NULL)
 		return (NULL);
@@ -44,11 +43,13 @@ static t_process	*ft_process_create(void)
 	proc->path = NULL;
 	proc->exec  = NULL;
 	proc->params = NULL;
+	proc->pipes.rd_fd = -1;
+	proc->pipes.wr_fd = -1;
 	return (proc);
 }
 
 t_process	*ft_process_new(const char *command, const char **path, \
-				t_pipe *pipes, size_t i)
+				t_pipe pipe)
 {
 	t_process	*proc;
 	char		**splitted_command;
@@ -59,15 +60,14 @@ t_process	*ft_process_new(const char *command, const char **path, \
 	proc = ft_process_create();
 	if (proc == NULL)
 		return (NULL);
-	proc->pipe_in = pipes[i * 2];
-	proc->pipe_out = pipes[i * 2 + 1];
+	proc->pipes = pipe;
 	proc->path = (char **)path;
 	proc->params = splitted_command;
 	proc->exec = splitted_command[0];
 	return (proc);	
 }
 
-void		ft_process_destroy(void	*ptr)
+void	ft_process_destroy(void	*ptr)
 {
 	t_process	*proc;
 

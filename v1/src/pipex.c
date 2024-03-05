@@ -5,255 +5,186 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/18 21:56:50 by gabriel           #+#    #+#             */
-/*   Updated: 2024/03/03 23:08:03 by gabriel          ###   ########.fr       */
+/*   Created: 2021/06/15 22:08:23 by greus-ro          #+#    #+#             */
+/*   Updated: 2024/03/06 00:35:54 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <fcntl.h>
 #include <unistd.h>
-#include "ft_environment.h"
-#include "ft_error.h"
-#include "ft_get_next_line.h"
+#include <fcntl.h>
+#include <sys/wait.h>
+
 #include "libft.h"
-#include "ft_pipe.h"
-#include "ft_process.h"
-#include "ft_utils.h"
-#include <sys/types.h>
+#include "ft_ptr.h"
+#include "pipex.h"
+
+
+int	ft_openfile (char *filename, int mode)
+{
+	if (mode == INFILE)
+	{
+		if (access(filename, F_OK))
+		{
+			perror("Error opening file:");
+			/*
+			write(STDERR, "pipex: ", 7);
+			write(STDERR, filename, str_ichr(filename, 0));
+			write(STDERR, ": No such file or directory\n", 28);
+			*/
+			return (STDIN_FILENO);
+		}
+		return (open(filename, O_RDONLY));
+	}
+	else
+		return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, 644));
+}
 
 /*
-static int	ft_pipex_read_input(const char * file_name)
+char	*ft_getPath (char *cmd, char **env)
 {
-	int		status;
-	int 	fd;
-	char	*line;
+	char	*path;
+	char	*dir;
+	char	*bin;
+	int		i;
 
-	fd = open(file_name, O_RDONLY);
-	if (fd < 0)
-		ft_error_print_errno();
-	line = "";
-	while ( line != NULL)
-	{
-		line = ft_get_next_line_many_fds(fd);
-		if (line != NULL)
-		{
-			ft_putstr_fd(line, S);
-			free(line);
-		}
-	}
-	close(fd);
-	close(out_pipe.wr_fd);
-//	waitpid(pid_soon, &status, 0);
-}
-
-static void	ft_pipex_write_output(const char * file_name,t_pipe in_pipe)
-{
-	int 	fd;
-	char	*line;
-
-	close (in_pipe.wr_fd);
-	fd = open(file_name, O_WRONLY | O_CREAT, 744);
-	if (fd < 0)
-		ft_error_print_errno();
-	line = "";
-	//dup2(in_pipe.rd_fd, fd);
-	while ( line != NULL)
-	{
-		line = ft_get_next_line_many_fds(in_pipe.rd_fd);
-		if (line != NULL)
-		{
-			ft_putstr_fd(line, fd);
-			free(line);
-		}
-	}
-	close(fd);
-	close(in_pipe.rd_fd);
-}
-
-static	void ft_execute_commands(t_params params, const char **path, \
-		t_pipe *pipes)
-{
-	size_t 		i;
-	t_process	*process;
-	
-	i = 2;
-	while (i < (size_t)params.argc)
-	{
-		process = ft_process_new(params.argv[i], path, pipes, i);
-		ft_process_execute(process, i, params);
-		ft_process_destroy(process);
+	i = 0;
+	while (env[i] != NULL && ft_strncmp(env[i], "PATH=", 5))
 		i++;
+	if (env[i] == NULL)
+		return (cmd);
+	path = env[i] + 5;
+	while (path && str_ichr(path, ':') > -1)
+	{
+		//dir = str_ndup(path, str_ichr(path, ':'));
+		dir = ft_strdup(path, str_ichr(path, ':'));
+		//bin = path_join(dir, cmd);
+		bin = ft_strjoin(dir, cmd);
+		free(dir);
+		if (access(bin, F_OK) == 0)
+			return (bin);
+		free(bin);
+		path += str_ichr(path, ':') + 1;
 	}
+	return (cmd);
 }
 */
 
-static t_bool	ft_read_input_file(const char *filename
+
+
+/*
+char	*ft_getPath_cmd (char *cmd, char **env)
 {
-	int		fd;
-	char	*line;
+	char	*path;
+	char	*dir;
+	char	*bin;
+	char	**path_folders;
 
-	fd = open(filename,O_RDONLY);
-	if (fd < 0)
-		return (FALSE);
-	line = filename;
-	while (line != NULL)
-	{
-		line = ft_get_next_line_many_fds(fd);
-		if (line != NULL)
-			write(STDOUT_FILENO, line, ft_strlen(line));
-	}
-	return (TRUE);
-}
-
-static t_bool	ft_write_output_file(const char *filename)
-{
-	int 	fd;
-	char	*line;
-
-	fd = open(filename, O_WRONLY | O_CREAT , 744);
-	if (fd < 0)
-		return (FALSE);
-	line = filename;
-	while (line != NULL)
-	{
-		line = ft_get_next_line_many_fds(STDIN_FILENO);
-		if (line !=NULL)
-			write(fd, line, ft_strlen(line));
-	}
-	close (fd);
-	return (TRUE);
-}
-
-char	**ft_process_parse_cmd2(const char *command)
-{
-	char	**splitted_str;
-	splitted_str = ft_split(command, ' ');
-	if (splitted_str == NULL)
-		return (NULL);
-	return (splitted_str);	
-}
-
-void    ft_process_execute2(t_params args, size_t num_proc, const char **path)
-{	
-	char    *exec;
-	char    *path;
-	size_t	i;
-	char	**splitted_cmd;
-
-	splitted_cmd  = ft_process_parse_cmd2(args.argv[num_proc]);	
 	i = 0;
-	while (path[i] != NULL)
-	{
-		exec = ft_strjoin(path[i], splitted_cmd[0]);
-		if(access(exec, X_OK) == 0)
-		{
-			if (execve(exec, (char * const *)splitted_cmd + 1,NULL) < 0)
-				ft_error_print_errno();
-			return ;
-		}
+	while (env[i] != NULL && ft_strncmp(env[i], "PATH=", 5))
 		i++;
+	if (env[i] == NULL)
+		return (cmd);
+	path = env[i] + 5;
+	while (path && str_ichr(path, ':') > -1)
+	{
+		//dir = str_ndup(path, str_ichr(path, ':'));
+		dir = ft_strdup(path, str_ichr(path, ':'));
+		//bin = path_join(dir, cmd);
+		bin = ft_strjoin(dir, cmd);
+		free(dir);
+		if (access(bin, F_OK) == 0)
+			return (bin);
+		free(bin);
+		path += str_ichr(path, ':') + 1;
 	}
-	ft_ptr_free_matrix(splitted_cmd);
+	return (cmd);
+}
+*/
+void	ft_exec_cmd (char *cmd, char **env, char **path)
+{
+	char	**cmd_args;
+	char	*cmd_path;
+	size_t	i;
+
+	cmd_args = ft_split(cmd, ' ');
+	if (cmd_args == NULL)
+	{
+		ft_putendl_fd("Error treating cmd", STDERR_FILENO);
+		exit(EXIT_FAILURE);		
+	}
+	if (access(cmd_args[0], F_OK) == 0)
+		cmd_path = cmd_args[0];
+	else
+	{
+		i = 0;
+		while(path[i] != NULL)
+		{
+			cmd_path = ft_strjoin(path[i], cmd_args[0]);
+			ft_putendl_fd(cmd_path, STDERR_FILENO);
+			if (access(cmd_path, F_OK) == 0)
+				break;
+			free(cmd_path);
+			i++;
+		}
+		if (path[i] == NULL)
+		{
+			ft_ptr_free_matrix(cmd_args);
+			exit(EXIT_FAILURE);			
+		}
+	}
+	execve(cmd_path, cmd_args, env);
+	free (cmd_path);
+	ft_ptr_free_matrix(cmd_args);
+	exit(EXIT_SUCCESS);
 }
 
-
-t_bool	ft_execute(t_params params, size_t i, const char **path)
+void	ft_exec_cmd_and_redir (char *cmd, char **env, int fdin, char **path)
 {
-	t_pipe	pipe;
 	pid_t	pid;
-	int		status;
+	int		pipefd[2];
 
-	if (i == params.argc - 1)
-		return (ft_write_output_file(params.argv[i]));
-	pipe = ft_pipe_new();
+	pipe(pipefd);
 	pid = fork();
-	if(pid != 0)
+	if (pid != 0)
 	{
-		close(pipe.rd_fd);
-		if(pid < 0)
-		{
-			//ft_ptr_free_matrix(path);
-			ft_error_print_errno();
-			//exit(EXIT_FAILURE);
-			return (FALSE);
-		}
-		dup2(pipe.wr_fd, STDOUT_FILENO);
-		if (i == 1)
-			ft_read_input_file(params.argv[i]);
-		else
-			ft_process_execute2(params, i, path);
-		wait(&status);
-		close(pipe.wr_fd);
+		close(pipefd[PIPE_WRITE_FD]);
+		dup2(pipefd[PIPE_READ_FD], STDIN_FILENO);
+		waitpid(pid, NULL, 0);
 	}
 	else
 	{
-		close(pipe.wr_fd);
-		dup2(pipe.rd_fd, STDIN_FILENO);
-		ft_execute(params, i + 1 , path);
-		close(pipe.rd_fd);		
+		close(pipefd[PIPE_READ_FD]);
+		dup2(pipefd[PIPE_WRITE_FD], STDOUT_FILENO);
+		if (fdin == STDIN_FILENO)
+			exit(EXIT_SUCCESS);
+		else
+			ft_exec_cmd(cmd, env, path);
 	}
-	return (TRUE);
 }
 
-/*
-	if (i == 1)
-	{
-		fd = ft_open_input_file(params.argv[i]);
-		if (fd < 0)
-		{
-			ft_error_print_errno();
-			return (FALSE);
-		}
-	}
-	if (i == params.argc - 1)
-	{
-		
-	}
-
-*/
-int	main(int argc, char **argv, char *envp[])
+int	main (int argc, char **argv, char **env)
 {
-	t_params		params;
-	char			**path_folders;
-	size_t          i;
+	int	fdin;
+	int	fdout;
+	char	**path;
 
-	params = ft_utils_create_params(argc, argv, envp);
-	if (params.argc <= 5)
+	if (argc == 5)
 	{
-		ft_error_print_str("Error\nBad number of arguments\n");
-		exit(EXIT_FAILURE);
+		path = ft_env_getpath(env);
+		fdin = ft_openfile(argv[1], INFILE);
+		fdout = ft_openfile(argv[4], OUTFILE);
+		dup2(fdin, STDIN_FILENO);
+		dup2(fdout, STDOUT_FILENO);
+		ft_exec_cmd_and_redir(argv[2], env, fdin, path);
+		ft_exec_cmd(argv[3], env, path);
+		close (fdin);
+		close (fdout);
+		ft_ptr_free_matrix(path);
 	}
-	path_folders = ft_env_get_path(params.envp);
-	if (path_folders == NULL)
-	{
-		ft_error_print_str("Error\nError parsing environment\n");
-		exit(EXIT_FAILURE);
-	}
-	ft_execute(params, 1, path_folders);
-	ft_ptr_free_matrix(path_folders);
-	return (0);
+	else
+		write(STDERR_FILENO, "Invalid number of arguments.\n", 29);
+	return (1);
 }
-
-/*
-int	main(int argc, char **argv, char *envp[])
-{
-	t_main_params	params;
-	char			**path_folders;
-	t_pipe			*v_pipes;
-	t_process		*process;
-	size_t			num_pipes;
-
-	params = ft_utils_create_params(argc, argv, envp);
-	if (params.argc <= 5)
-		ft_error_print_str("Error\nBad number of arguments\n");
-	num_pipes = params.argc - 3;
-	path_folders = ft_env_get_path(params.envp);
-	v_pipes = ft_pipelist_create(num_pipes);
-	if (v_pipes == NULL)
-		ft_error_print_str("Error\nError in malloc\n");
-	ft_execute_commands(params, (const char **)path_folders, v_pipes);
-	ft_pipelist_destroy(v_pipes, num_pipes);
-	return (0);
-}
-*/
