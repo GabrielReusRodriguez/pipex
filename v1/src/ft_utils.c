@@ -3,21 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/29 23:01:38 by gabriel           #+#    #+#             */
-/*   Updated: 2024/03/03 20:48:03 by gabriel          ###   ########.fr       */
+/*   Created: 2024/03/07 16:24:18 by greus-ro          #+#    #+#             */
+/*   Updated: 2024/03/08 22:42:54 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_utils.h"
+#include <unistd.h>
+#include <stdlib.h>
 
-t_params	ft_utils_create_params(int argc, char**argv, char *envp[])
+#include "libft.h"
+
+char	*ft_utils_which(char	**cmd_args, char **path)
 {
-	t_params	params;
+	char	*cmd_path;
+	size_t	i;
 
-	params.argc = argc;
-	params.argv = argv;
-	params.envp = envp;
-	return (params);
+	cmd_path = NULL;
+	if (access(cmd_args[0], F_OK) == 0)
+		cmd_path = cmd_args[0];
+	else
+	{
+		i = 0;
+		while (path[i] != NULL)
+		{
+			cmd_path = ft_strjoin(path[i], cmd_args[0]);
+			if (access(cmd_path, F_OK) == 0)
+				return (cmd_path);
+			free(cmd_path);
+			i++;
+		}
+		return (NULL);
+	}
+	return (cmd_path);
 }

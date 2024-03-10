@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_environment.h                                   :+:      :+:    :+:   */
+/*   ft_exec.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 01:28:54 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/08 22:36:51 by greus-ro         ###   ########.fr       */
+/*   Created: 2024/03/08 22:00:09 by greus-ro          #+#    #+#             */
+/*   Updated: 2024/03/10 00:57:27 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ENVIRONMENT_H
-# define FT_ENVIRONMENT_H
+#ifndef FT_EXEC_H
+# define FT_EXEC_H
 
-typedef struct s_env
-{
-	char	**env;
-	char	**path;
-}	t_env;
+# include "ft_environment.h"
 
-t_env	ft_env_new(char *envp[]);
+int     ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout);
+void	ft_exec_cmd(char *cmd, t_env env);
 
 #endif

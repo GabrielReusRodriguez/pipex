@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_environment.h                                   :+:      :+:    :+:   */
+/*   ft_child.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 01:28:54 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/08 22:36:51 by greus-ro         ###   ########.fr       */
+/*   Created: 2024/03/08 21:48:51 by greus-ro          #+#    #+#             */
+/*   Updated: 2024/03/09 22:11:40 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ENVIRONMENT_H
-# define FT_ENVIRONMENT_H
+#ifndef FT_CHILD_H
+# define FT_CHILD_H
 
-typedef struct s_env
-{
-	char	**env;
-	char	**path;
-}	t_env;
+# include "ft_environment.h"
 
-t_env	ft_env_new(char *envp[]);
+void	ft_child_execute(int pipefd[2], char *cmd, t_env env, int fdout);
 
 #endif

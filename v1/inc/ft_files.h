@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_environment.h                                   :+:      :+:    :+:   */
+/*   ft_files.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 01:28:54 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/08 22:36:51 by greus-ro         ###   ########.fr       */
+/*   Created: 2024/03/08 21:40:12 by greus-ro          #+#    #+#             */
+/*   Updated: 2024/03/08 22:38:44 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ENVIRONMENT_H
-# define FT_ENVIRONMENT_H
+#ifndef FT_FILES_H
+# define FT_FILES_H
 
-typedef struct s_env
-{
-	char	**env;
-	char	**path;
-}	t_env;
+# define INFILE 0
+# define OUTFILE 1
 
-t_env	ft_env_new(char *envp[]);
+int		ft_file_open(char *filename, int mode);
+void	ft_file_close(int fdin, int fdout);
 
 #endif

@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ptr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 00:33:20 by gabriel           #+#    #+#             */
-/*   Updated: 2024/03/06 00:18:30 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/08 22:34:12 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-#include "ft_ptr.h"
 
-void	*ft_ptr_free_matrix(char	**matrix)
+void	*ft_ptr_free_matrix(char **matrix)
 {
-    size_t  i;
+	size_t	i;
 
 	if (matrix != NULL)
 	{

@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_environment.h                                   :+:      :+:    :+:   */
+/*   ft_fd.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/24 01:28:54 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/08 22:36:51 by greus-ro         ###   ########.fr       */
+/*   Created: 2024/03/08 21:42:29 by greus-ro          #+#    #+#             */
+/*   Updated: 2024/03/09 22:12:36 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_ENVIRONMENT_H
-# define FT_ENVIRONMENT_H
+#ifndef FT_FD_H
+# define FT_FD_H
 
-typedef struct s_env
-{
-	char	**env;
-	char	**path;
-}	t_env;
+# define PIPE_READ_FD 0
+# define PIPE_WRITE_FD 1
+# define PIPE_ALL_FD 2
 
-t_env	ft_env_new(char *envp[]);
+# define NO_FD -1
+
+# include "ft_utils.h"
+
+t_bool	ft_fd_pipe_close(int fd[2], int which_fd);
 
 #endif

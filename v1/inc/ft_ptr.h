@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ptr.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/24 00:32:00 by gabriel           #+#    #+#             */
-/*   Updated: 2024/02/28 21:28:50 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/07 16:21:44 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PTR_H
 # define FT_PTR_H
 
-void	*ft_ptr_free_matrix(char	**ptr);
+void	*ft_ptr_free_matrix(char **ptr);
 void	*ft_ptr_free_ptr(void *ptr);
 
 #endif
