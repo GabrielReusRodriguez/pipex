@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:05:41 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 03:12:00 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 18:52:56 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ static	void	ft_main_check_fds(int fdin, int fdout)
 	if (fdin < 0 || fdout < 0)
 	{
 		ft_file_close(fdin, fdout);
-		ft_error_print_errno();
-		exit(EXIT_SUCCESS);
+		ft_error_print_errno_and_exit(NULL, EXIT_SUCCESS);
 	}
 }
 
@@ -37,7 +36,7 @@ static void	ft_main_dups(int fdin, int fdout)
 	if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
 	{
 		ft_file_close(fdin, fdout);
-		ft_error_print_errno_and_exit();
+		ft_error_print_errno_and_exit(NULL, EXIT_FAILURE);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:02:17 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 03:18:45 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 18:56:04 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,19 @@ void	ft_exec_cmd(char *cmd, t_env env)
 
 	cmd_args = ft_split(cmd, ' ');
 	if (cmd_args == NULL)
-		ft_error_print_str_and_exit("Error treating cmd");
+		ft_error_print_str_and_exit("Error treating cmd args", EXIT_FAILURE);
 	cmd_path = ft_utils_which(cmd_args, env.path);
 	if (cmd_path == NULL)
 	{
 		ft_ptr_free_matrix(cmd_args);
-		ft_error_print_str_and_exit("Error treating cmd");
+		//ft_error_print_str_and_exit("Error treating cmd path");
+        exit(EXIT_FAILURE);
 	}
 	if (execve(cmd_path, cmd_args, env.env) < 0)
 	{
 		free(cmd_path);
 		ft_ptr_free_matrix(cmd_args);
-		ft_error_print_str_and_exit("Error executing cmd");
+		ft_error_print_str_and_exit("Error executing cmd", EXIT_FAILURE);
 	}
 	free (cmd_path);
 	ft_ptr_free_matrix(cmd_args);
@@ -54,7 +55,7 @@ int ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout)
 
 	if (pipe(pipefd) == -1)
 	{
-		ft_error_print_errno();
+		ft_error_print_errno(NULL);
 		return (FALSE);
 	}
 	pid = fork();
@@ -62,7 +63,7 @@ int ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout)
 	{
 		if (pid == -1)
 		{
-			ft_error_print_errno();
+			ft_error_print_errno(NULL);
 			ft_file_close(pipefd[PIPE_READ_FD], pipefd[PIPE_WRITE_FD]);
 			return (1);
 		}

@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:51 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 00:21:27 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 18:53:32 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_child_execute(int pipefd[2], char *cmd, t_env env, int fdout)
 		if (dup2(pipefd[PIPE_WRITE_FD], STDOUT_FILENO) == -1)
 		{
 			close(pipefd[PIPE_WRITE_FD]);
-			ft_error_print_errno_and_exit();
+			ft_error_print_errno_and_exit(NULL, EXIT_FAILURE);
 		}
 	}
 	else
@@ -34,7 +34,7 @@ void	ft_child_execute(int pipefd[2], char *cmd, t_env env, int fdout)
 		if (dup2(fdout, STDOUT_FILENO) == -1)
 		{
 			close(pipefd[PIPE_WRITE_FD]);
-			ft_error_print_errno_and_exit();
+			ft_error_print_errno_and_exit(NULL, EXIT_FAILURE);
 		}
 	}
 	ft_exec_cmd(cmd, env);

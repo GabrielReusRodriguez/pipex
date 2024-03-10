@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:22:00 by gabriel           #+#    #+#             */
-/*   Updated: 2024/03/08 22:32:37 by greus-ro         ###   ########.fr       */
+/*   Updated: 2024/03/10 18:50:57 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,12 @@
 
 #include "libft.h"
 
-void	ft_error_print_errno(void)
+void	ft_error_print_errno(const char *msg)
 {
-	perror("Error: ");
+	if (msg == NULL)
+		perror("Error");
+	else
+		perror(msg);
 }
 
 void	ft_error_print_str(const char *str)
@@ -35,14 +38,14 @@ void	ft_error_print_code(int code)
 	ft_putendl_fd(str, STDERR_FILENO);
 }
 
-void	ft_error_print_str_and_exit(const char *str)
+void	ft_error_print_str_and_exit(const char *str, int exit_status)
 {
 	ft_error_print_str(str);
-	exit(EXIT_FAILURE);
+	exit(exit_status);
 }
 
-void	ft_error_print_errno_and_exit(void)
+void	ft_error_print_errno_and_exit(const char * msg, int exit_status)
 {
-	ft_error_print_errno();
-	exit(EXIT_FAILURE);
+	ft_error_print_errno(msg);
+	exit(exit_status);
 }
