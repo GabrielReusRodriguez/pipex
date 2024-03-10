@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:05:41 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 18:52:56 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 23:56:04 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 #include "ft_files.h"
 #include "ft_ptr.h"
 #include "ft_utils.h"
-
 
 static	void	ft_main_check_fds(int fdin, int fdout)
 {
@@ -51,7 +50,7 @@ int	main(int argc, char **argv, char **envp)
 	int		fdin;
 	int		fdout;
 	t_env	env;
-	int     status;
+	int		status;
 
 	if (argc == 5)
 	{
@@ -64,11 +63,11 @@ int	main(int argc, char **argv, char **envp)
 		if (status != 0)
 		{
 			ft_main_free_resources(fdin, fdout, env);
-			return (status);
+			exit(status);
 		}
 		status = ft_exec_redir_and_cmd(argv[3], env, fdout);
 		ft_main_free_resources(fdin, fdout, env);
-		return (status);
+		exit (status);
 	}
 	else
 		ft_error_print_str("Invalid number of arguments.");

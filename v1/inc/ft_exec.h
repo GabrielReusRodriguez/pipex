@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:00:09 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 00:57:27 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 23:57:54 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "ft_environment.h"
 
-int     ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout);
+int		ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout);
 void	ft_exec_cmd(char *cmd, t_env env);
 
 #endif

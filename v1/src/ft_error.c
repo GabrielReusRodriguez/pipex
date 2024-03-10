@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 22:22:00 by gabriel           #+#    #+#             */
-/*   Updated: 2024/03/10 18:50:57 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 23:52:40 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_error_print_str_and_exit(const char *str, int exit_status)
 	exit(exit_status);
 }
 
-void	ft_error_print_errno_and_exit(const char * msg, int exit_status)
+void	ft_error_print_errno_and_exit(const char *msg, int exit_status)
 {
 	ft_error_print_errno(msg);
 	exit(exit_status);

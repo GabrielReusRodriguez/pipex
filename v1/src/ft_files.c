@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:38:32 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 18:47:36 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 23:52:10 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,7 @@ int	ft_file_open(char *filename, int mode)
 	{
 		if (access(filename, F_OK) == -1)
 		{
-			//ft_error_print_errno();
-			//return (STDIN_FILENO);
-            return (-1);
+			return (-1);
 		}
 		return (open(filename, O_RDONLY));
 	}

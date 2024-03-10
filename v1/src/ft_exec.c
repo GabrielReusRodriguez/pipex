@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:02:17 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 18:57:10 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/10 23:57:27 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 #include "ft_ptr.h"
 #include "ft_child.h"
 
+/*
+	execve replaces current process with the cmd and if everything 
+		is ok it WILL NOT return.
+		It only returns if an error occurs.
+*/
 void	ft_exec_cmd(char *cmd, t_env env)
 {
 	char	**cmd_args;
@@ -33,9 +38,7 @@ void	ft_exec_cmd(char *cmd, t_env env)
 	cmd_path = ft_utils_which(cmd_args, env.path);
 	if (cmd_path == NULL)
 	{
-		ft_ptr_free_matrix(cmd_args);
-		//ft_error_print_str_and_exit("Error treating cmd path");
-        exit(EXIT_FAILURE);
+		cmd_path = ft_strdup(cmd_args[0]);
 	}
 	if (execve(cmd_path, cmd_args, env.env) < 0)
 	{
@@ -43,12 +46,9 @@ void	ft_exec_cmd(char *cmd, t_env env)
 		ft_ptr_free_matrix(cmd_args);
 		ft_error_print_str_and_exit("Error executing cmd", EXIT_FAILURE);
 	}
-	free (cmd_path);
-	ft_ptr_free_matrix(cmd_args);
-	exit(EXIT_SUCCESS);
 }
 
-int ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout)
+int	ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout)
 {
 	pid_t	pid;
 	int		pipefd[2];
