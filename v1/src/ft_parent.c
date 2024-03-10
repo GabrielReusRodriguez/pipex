@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 23:55:52 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/11 00:03:29 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ int	ft_parent_execute(int pipefd[2], pid_t pid)
 		return (EXIT_FAILURE);
 	}
 	status = ft_parent_get_child_status(status);
+	close(pipefd[PIPE_READ_FD]);
 	return (status);
 }
