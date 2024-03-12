@@ -7,8 +7,8 @@ SRC_DIR=./src
 OBJ_DIR=./obj
 INC_DIR=./inc
 
-BONUS_SRC_DIR=./src_bonus
-BONUS_INC_DIR=./inc_bonus
+BONUS_SRC_DIR=./bonus_src
+BONUS_INC_DIR=./bonus_inc
 
 LIBFT_DIR=./libft
 LIBFT_INC_DIR=${LIBFT_DIR}/inc
@@ -26,8 +26,13 @@ SRC_FILES=	pipex.c				\
 			ft_utils.c
 
 BONUS_SRC_FILES=	pipex_bonus.c				\
+					ft_child_bonus.c			\
 					ft_environment_bonus.c		\
 					ft_error_bonus.c			\
+					ft_exec_bonus.c				\
+					ft_fd_bonus.c				\
+					ft_files_bonus.c			\
+					ft_parent_bonus.c			\
 					ft_ptr_bonus.c				\
 					ft_utils_bonus.c
 
@@ -39,9 +44,9 @@ DEP_BONUS_FILES=$(BONUS_SRC_FILES:%.c=$(OBJ_DIR)/%.d)
 
 all: $(NAME)
 
-#bonus: $(OBJ_DIR) ${LIBFT_LIB} ${OBJ_BONUS_FILES}
-#	cc ${OBJ_BONUS_FILES} -o ${NAME} ${LIBFT_LIB}
-#	touch bonus
+bonus: $(OBJ_DIR) ${LIBFT_LIB} ${OBJ_BONUS_FILES}
+	cc ${OBJ_BONUS_FILES} -o ${NAME} ${LIBFT_LIB}
+	@touch bonus
 
 $(NAME): $(OBJ_DIR) ${LIBFT_LIB} $(OBJ_FILES) 
 	cc ${OBJ_FILES} -o ${NAME} ${LIBFT_LIB}

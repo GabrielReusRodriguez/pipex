@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parent.c                                        :+:      :+:    :+:   */
+/*   ft_parent_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:07:02 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 19:23:18 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
-#include "ft_utils.h"
-#include "ft_fd.h"
-#include "ft_error.h"
+#include "ft_utils_bonus.h"
+#include "ft_fd_bonus.h"
+#include "ft_error_bonus.h"
 
 /*
 	WIFEXITED returns true if child exited with exit function. Then we get 

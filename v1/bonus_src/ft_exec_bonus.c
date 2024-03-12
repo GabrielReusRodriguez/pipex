@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exec.c                                          :+:      :+:    :+:   */
+/*   ft_exec_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:02:17 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 20:25:56 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 19:23:01 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 #include <unistd.h>
 
 #include "libft.h"
-#include "ft_environment.h"
-#include "ft_fd.h"
-#include "ft_files.h"
-#include "ft_error.h"
-#include "ft_parent.h"
-#include "ft_ptr.h"
-#include "ft_child.h"
+#include "ft_environment_bonus.h"
+#include "ft_fd_bonus.h"
+#include "ft_files_bonus.h"
+#include "ft_error_bonus.h"
+#include "ft_parent_bonus.h"
+#include "ft_ptr_bonus.h"
+#include "ft_child_bonus.h"
 
 /*
 	execve replaces current process with the cmd and if everything 
