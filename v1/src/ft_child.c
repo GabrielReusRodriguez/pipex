@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:51 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/11 00:09:02 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 21:36:20 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 #include "ft_fd.h"
 
 /*
-    We do NOT close write pipe because EXIT does it when execve ends the 
-        child  process.
+	We do NOT close write pipe because EXIT does it when execve ends the 
+		child  process.
 */
 void	ft_child_execute(int pipefd[2], char *cmd, t_env env, int fdout)
 {

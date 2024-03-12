@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:02:17 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:23:01 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 20:56:25 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	ft_exec_cmd(char *cmd, t_env env)
 	cmd_path = ft_utils_which(cmd_args, env.path);
 	if (cmd_path == NULL)
 	{
-		cmd_path = ft_strdup(cmd_args[0]);
+		ft_ptr_free_matrix(cmd_args);
+		ft_error_print_str_and_exit("Error executing cmd", EXIT_FAILURE);
 	}
 	if (execve(cmd_path, cmd_args, env.env) < 0)
 	{

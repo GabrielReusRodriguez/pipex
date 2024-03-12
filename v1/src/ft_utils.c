@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:24:18 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/08 22:42:54 by greus-ro         ###   ########.fr       */
+/*   Updated: 2024/03/12 21:47:41 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_utils_which(char	**cmd_args, char **path)
 
 	cmd_path = NULL;
 	if (access(cmd_args[0], F_OK) == 0)
-		cmd_path = cmd_args[0];
+		cmd_path = ft_strdup(cmd_args[0]);
 	else
 	{
 		i = 0;

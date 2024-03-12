@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:38:32 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:23:11 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 22:08:37 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,33 @@
 #include "ft_error_bonus.h"
 #include "ft_files_bonus.h"
 
-int	ft_file_open(char *filename, int mode)
+/*
+	oflag = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+	EQUALS 0644
+*/
+int	ft_file_open(char *filename, int mode, const char *file_delimiter)
 {
+	int oflag;
+	
+	oflag = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	if (mode == INFILE)
 	{
-		if (access(filename, F_OK) == -1)
-		{
-			return (-1);
-		}
+		if (access(filename, R_OK) == -1)
+				return (-1);
 		return (open(filename, O_RDONLY));
 	}
 	else
-		return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644));
+	{
+		if (file_delimiter == NULL)
+			return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, oflag));
+		else
+		{
+			if(access(file_delimiter, W_OK) == 0)
+				return (open(filename, O_CREAT | O_WRONLY | O_APPEND, oflag));
+			else
+				return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, oflag));
+		}
+	}
 }
 
 void	ft_file_close(int fdin, int fdout)

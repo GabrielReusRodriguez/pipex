@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:24:18 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:21:11 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 21:50:45 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_utils_which(char	**cmd_args, char **path)
 
 	cmd_path = NULL;
 	if (access(cmd_args[0], F_OK) == 0)
-		cmd_path = cmd_args[0];
+		cmd_path = ft_strdup(cmd_args[0]);
 	else
 	{
 		i = 0;

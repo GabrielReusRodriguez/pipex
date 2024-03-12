@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:05:41 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 20:04:12 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 22:07:39 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,13 @@ static void	ft_main_dups(int fdin, int fdout)
 	}
 }
 
-static void	ft_main_free_resources(int fdin, int fdout, t_env env)
+static void	ft_main_free_resources(int fdin, int fdout, t_env env, \
+				const char *file_output)
 {
 	ft_file_close(fdin, fdout);
 	ft_ptr_free_matrix(env.path);
+	if (file_output != NULL)
+		unlink(file_output);
 }
 
 static int ft_main_execute_pipe(char **argv, t_env env,  \
@@ -72,19 +75,19 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc >= 4)
 	{
-		fdin = ft_file_open(argv[1], INFILE);
-		fdout = ft_file_open(argv[argc - 1], OUTFILE);
+		fdin = ft_file_open(argv[1], INFILE, NULL);
+		fdout = ft_file_open(argv[argc - 1], OUTFILE, argv[1]);
 		ft_main_check_fds(fdin, fdout);
 		ft_main_dups(fdin, fdout);
 		env = ft_env_new(envp);
 		status = ft_main_execute_pipe(argv, env, 2, argc - 2);
 		if (status != 0)
 		{
-			ft_main_free_resources(fdin, fdout, env);
+			ft_main_free_resources(fdin, fdout, env, argv[argc - 1]);
 			exit(status);
 		}
 		status = ft_exec_redir_and_cmd(argv[argc - 2], env, fdout);
-		ft_main_free_resources(fdin, fdout, env);
+		ft_main_free_resources(fdin, fdout, env, NULL);
 		exit (status);
 	}
 	else

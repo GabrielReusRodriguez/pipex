@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:40:12 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:24:49 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 22:06:50 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define INFILE 0
 # define OUTFILE 1
 
-int		ft_file_open(char *filename, int mode);
+int	ft_file_open(char *filename, int mode, const char *file_delimiter);
 void	ft_file_close(int fdin, int fdout);
 
 #endif

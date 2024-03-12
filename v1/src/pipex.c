@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:05:41 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/10 23:56:04 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 21:35:42 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,32 @@ static void	ft_main_dups(int fdin, int fdout)
 	}
 }
 
-static void	ft_main_free_resources(int fdin, int fdout, t_env env)
+static void	ft_main_free_resources(int fdin, int fdout, t_env env, \
+				const char *file_output)
 {
 	ft_file_close(fdin, fdout);
 	ft_ptr_free_matrix(env.path);
+	if (file_output != NULL)
+		unlink(file_output);
+}
+
+static int	ft_main_exec_pipe(char **argv, t_env env, int fdin, int fdout)
+{
+	int	status;
+
+	status = ft_exec_redir_and_cmd(argv[2], env, NO_FD);
+	if (status != 0)
+	{
+		ft_main_free_resources(fdin, fdout, env, argv[4]);
+		exit(status);
+	}
+	status = ft_exec_redir_and_cmd(argv[3], env, fdout);
+	if (status != 0)
+	{
+		ft_main_free_resources(fdin, fdout, env, argv[4]);
+		exit(status);
+	}
+	return (status);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -59,17 +81,11 @@ int	main(int argc, char **argv, char **envp)
 		ft_main_check_fds(fdin, fdout);
 		ft_main_dups(fdin, fdout);
 		env = ft_env_new(envp);
-		status = ft_exec_redir_and_cmd(argv[2], env, NO_FD);
-		if (status != 0)
-		{
-			ft_main_free_resources(fdin, fdout, env);
-			exit(status);
-		}
-		status = ft_exec_redir_and_cmd(argv[3], env, fdout);
-		ft_main_free_resources(fdin, fdout, env);
+		status = ft_main_exec_pipe(argv, env, fdin, fdout);
+		ft_main_free_resources(fdin, fdout, env, NULL);
 		exit (status);
 	}
 	else
 		ft_error_print_str("Invalid number of arguments.");
-	return (1);
+	return (0);
 }

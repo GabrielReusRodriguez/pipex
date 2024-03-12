@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:07:02 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 21:35:57 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include "ft_utils.h"
 #include "ft_fd.h"
 #include "ft_error.h"
+
+#include "libft.h"
 
 /*
 	WIFEXITED returns true if child exited with exit function. Then we get 
@@ -40,6 +42,8 @@ static int	ft_parent_get_child_status(int status)
 /*
 	WUNTRACED gets status of stopped  or terminated
 	WNOHANGS get status indmetiately without waitting to the proccess to terminate
+		//if (waitpid(pid, &status, 0) == -1)
+
 */
 int	ft_parent_execute(int pipefd[2], pid_t pid)
 {
@@ -53,7 +57,7 @@ int	ft_parent_execute(int pipefd[2], pid_t pid)
 		close(pipefd[PIPE_READ_FD]);
 		return (EXIT_FAILURE);
 	}
-	if (waitpid(pid, &status, WNOHANG) == -1)
+	if (waitpid(pid, &status, WUNTRACED) == -1)
 	{
 		ft_error_print_errno(NULL);
 		close(pipefd[PIPE_READ_FD]);

@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:23:18 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/12 20:55:22 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int	ft_parent_execute(int pipefd[2], pid_t pid)
 		close(pipefd[PIPE_READ_FD]);
 		return (EXIT_FAILURE);
 	}
-	if (waitpid(pid, &status, WNOHANG) == -1)
+	//if (waitpid(pid, &status, WNOHANG) == -1)
+    if (waitpid(pid, &status, 0) == -1)
 	{
 		ft_error_print_errno(NULL);
 		close(pipefd[PIPE_READ_FD]);
