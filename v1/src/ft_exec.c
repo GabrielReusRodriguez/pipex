@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:02:17 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 20:43:43 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 00:25:01 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_exec_cmd(char *cmd, t_env env)
 	if (cmd_path == NULL)
 	{
 		ft_ptr_free_matrix(cmd_args);
-		ft_error_print_str_and_exit("Error executing cmd", EXIT_FAILURE);
+		ft_error_print_str_and_exit("Error command not found", EXIT_FAILURE);
 	}
 	if (execve(cmd_path, cmd_args, env.env) < 0)
 	{
@@ -57,7 +57,7 @@ int	ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout)
 	if (pipe(pipefd) == -1)
 	{
 		ft_error_print_errno(NULL);
-		return (FALSE);
+		return (EXIT_FAILURE);
 	}
 	pid = fork();
 	if (pid != 0)
@@ -66,11 +66,11 @@ int	ft_exec_redir_and_cmd(char *cmd, t_env env, int fdout)
 		{
 			ft_error_print_errno(NULL);
 			ft_file_close(pipefd[PIPE_READ_FD], pipefd[PIPE_WRITE_FD]);
-			return (1);
+			return (EXIT_FAILURE);
 		}
-		return (ft_parent_execute(pipefd, pid));
+		return (ft_parent_execute(pipefd));
 	}
 	else
 		ft_child_execute(pipefd, cmd, env, fdout);
-	return (0);
+	return (EXIT_SUCCESS);
 }
