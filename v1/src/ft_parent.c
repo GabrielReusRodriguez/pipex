@@ -6,7 +6,7 @@
 /*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/15 00:26:34 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 00:28:19 by gabriel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int	ft_parent_get_last_child_status(size_t num_cmd)
 		//if (waitpid(pid, &status, 0) == -1)
 
 */
-//int	ft_parent_execute(int pipefd[2], pid_t pid)
 int	ft_parent_execute(int pipefd[2])
 {
 	int	status;
