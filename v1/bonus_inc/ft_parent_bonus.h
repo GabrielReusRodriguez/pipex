@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parent_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 22:23:58 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/15 00:27:32 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 14:16:01 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 
 int		ft_parent_execute(int pipefd[2]);
 int		ft_parent_get_last_child_status(size_t num_cmd);
-
 
 #endif

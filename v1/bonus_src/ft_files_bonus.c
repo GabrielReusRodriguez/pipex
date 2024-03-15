@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_files_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:38:32 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 22:08:37 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 14:19:34 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 */
 int	ft_file_open(char *filename, int mode, const char *file_delimiter)
 {
-	int oflag;
-	
+	int	oflag;
+
 	oflag = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	if (mode == INFILE)
 	{
 		if (access(filename, R_OK) == -1)
-				return (-1);
+			return (-1);
 		return (open(filename, O_RDONLY));
 	}
 	else
@@ -38,7 +38,7 @@ int	ft_file_open(char *filename, int mode, const char *file_delimiter)
 			return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, oflag));
 		else
 		{
-			if(access(file_delimiter, W_OK) == 0)
+			if (access(file_delimiter, W_OK) == 0)
 				return (open(filename, O_CREAT | O_WRONLY | O_APPEND, oflag));
 			else
 				return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, oflag));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parent_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/15 00:28:58 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 14:17:13 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	ft_parent_get_last_child_status(size_t num_cmd)
 	WUNTRACED gets status of stopped  or terminated
 	WNOHANGS get status indmetiately without waitting to the proccess to terminate
 */
-int	ft_parent_execute(int pipefd[2]
+int	ft_parent_execute(int pipefd[2])
 {
 	int	status;
 

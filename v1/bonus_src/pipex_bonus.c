@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:05:41 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/15 00:35:32 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 14:19:00 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,12 @@ static void	ft_main_free_resources(int fdin, int fdout, t_env env, \
 		unlink(file_output);
 }
 
-static int ft_main_execute_pipe(char **argv, t_env env,  \
+static int	ft_main_execute_pipe(char **argv, t_env env, \
 				int initial_cmd, int final_cmd)
 {
-	int status;
-	int i;
-	
+	int	status;
+	int	i;
+
 	status = -1;
 	i = initial_cmd;
 	while (i < final_cmd)
@@ -88,11 +88,12 @@ int	main(int argc, char **argv, char **envp)
 			exit(EXIT_FAILURE);
 		}
 		status = ft_exec_redir_and_cmd(argv[argc - 2], env, fdout);
-        status = ft_parent_get_last_child_status(argc - 4);
+		status = ft_parent_get_last_child_status(argc - 4);
 		ft_main_free_resources(fdin, fdout, env, NULL);
 		exit (status);
 	}
 	else
-		ft_error_print_str_and_exit("Invalid number of arguments.",EXIT_FAILURE);
+		ft_error_print_str_and_exit("Invalid number of arguments.", \
+			EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

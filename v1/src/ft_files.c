@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_files.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:38:32 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 22:02:20 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/15 14:20:51 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 int	ft_file_open(char *filename, int mode)
 {
+	int	oflag;
+
+	oflag = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 	if (mode == INFILE)
 	{
 		if (access(filename, R_OK) == -1)
@@ -26,7 +29,7 @@ int	ft_file_open(char *filename, int mode)
 		return (open(filename, O_RDONLY));
 	}
 	else
-		return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644));
+		return (open(filename, O_CREAT | O_WRONLY | O_TRUNC, oflag));
 }
 
 void	ft_file_close(int fdin, int fdout)
