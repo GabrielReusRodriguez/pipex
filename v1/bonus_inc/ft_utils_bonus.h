@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_utils_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriel <gabriel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:26:08 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/12 19:25:48 by gabriel          ###   ########.fr       */
+/*   Updated: 2024/03/16 22:21:54 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ typedef unsigned char	t_bool;
 # define FALSE 0
 
 char	*ft_utils_which(char **cmd_args, char **path);
+int		ft_strcmp(const char *str1, const char *str2);
 
 #endif

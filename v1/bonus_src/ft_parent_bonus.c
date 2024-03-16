@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parent_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:45:42 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/15 14:17:13 by greus-ro         ###   ########.fr       */
+/*   Updated: 2024/03/16 22:26:23 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,14 @@ static int	ft_parent_translate_status(int status)
 }
 
 /*
-	Every process has an unique pid and it is incremental every process we create 
-	so the bigger one is the last one.
+	Every process has an unique pid and it is 
+	incremental every process we create  so the bigger one is the last one.
+
+	4 wait function...
+	WUNTRACED gets status of stopped  or terminated
+	WNOHANGS get status indmetiately without waitting to the proccess 
+	to terminate
+
 */
 int	ft_parent_get_last_child_status(size_t num_cmd)
 {
@@ -70,10 +76,6 @@ int	ft_parent_get_last_child_status(size_t num_cmd)
 	return (ft_parent_translate_status(status));
 }
 
-/*
-	WUNTRACED gets status of stopped  or terminated
-	WNOHANGS get status indmetiately without waitting to the proccess to terminate
-*/
 int	ft_parent_execute(int pipefd[2])
 {
 	int	status;

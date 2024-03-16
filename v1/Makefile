@@ -44,9 +44,9 @@ DEP_BONUS_FILES=$(BONUS_SRC_FILES:%.c=$(OBJ_DIR)/%.d)
 
 all: $(NAME)
 
-#bonus: $(OBJ_DIR) ${LIBFT_LIB} ${OBJ_BONUS_FILES}
-#	cc ${OBJ_BONUS_FILES} -o ${NAME} ${LIBFT_LIB}
-#	@touch bonus
+bonus: $(OBJ_DIR) ${LIBFT_LIB} ${OBJ_BONUS_FILES}
+	cc ${OBJ_BONUS_FILES} -o ${NAME} ${LIBFT_LIB}
+	@touch bonus
 
 $(NAME): $(OBJ_DIR) ${LIBFT_LIB} $(OBJ_FILES) 
 	cc ${OBJ_FILES} -o ${NAME} ${LIBFT_LIB}
@@ -70,8 +70,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
-#	make fclean  -C ${MLX_DIR}
-#	make fclean  -C ${LIBFT_DIR}
+	make fclean  -C ${LIBFT_DIR}
 
 re: fclean all
 

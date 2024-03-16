@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 20:05:41 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/15 14:19:00 by greus-ro         ###   ########.fr       */
+/*   Updated: 2024/03/16 22:26:38 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,7 @@
 #include "ft_ptr_bonus.h"
 #include "ft_utils_bonus.h"
 #include "ft_parent_bonus.h"
-
-static	void	ft_main_check_fds(int fdin, int fdout)
-{
-	if (fdin < 0 || fdout < 0)
-	{
-		ft_file_close(fdin, fdout);
-		ft_error_print_errno_and_exit(NULL, EXIT_FAILURE);
-	}
-}
-
-static void	ft_main_dups(int fdin, int fdout)
-{
-	if (dup2(fdin, STDIN_FILENO) == -1 || dup2(fdout, STDOUT_FILENO) == -1)
-	{
-		ft_file_close(fdin, fdout);
-		ft_error_print_errno_and_exit(NULL, EXIT_FAILURE);
-	}
-}
+#include "libft.h"
 
 static void	ft_main_free_resources(int fdin, int fdout, t_env env, \
 				const char *file_output)
@@ -60,13 +43,71 @@ static int	ft_main_execute_pipe(char **argv, t_env env, \
 	while (i < final_cmd)
 	{
 		status = ft_exec_redir_and_cmd(argv[i], env, NO_FD);
-		if (status == -1)
+		if (status != 0)
 			return (status);
 		i++;
 	}
 	return (status);
 }
 
+static int	ft_main_get_first_cmd_pos(char **argv)
+{
+	if (ft_strcmp(argv[1], "here_doc") == 0)
+		return (3);
+	else
+		return (2);
+}
+
+static int	ft_main_exec_cmds(char **argv, int argc, t_fds fds, t_env env)
+{
+	int		status;
+
+	status = ft_main_execute_pipe(argv, env, \
+				ft_main_get_first_cmd_pos(argv), argc - 2);
+	if (status != 0)
+	{
+		ft_main_free_resources(fds.in, fds.out, env, argv[argc - 1]);
+		exit(status);
+	}
+	status = ft_exec_redir_and_cmd(argv[argc - 2], env, fds.out);
+	if (status != 0)
+	{
+		ft_main_free_resources(fds.in, fds.out, env, argv[argc - 1]);
+		exit(status);
+	}
+	status = ft_parent_get_last_child_status(argc - \
+				ft_main_get_first_cmd_pos(argv) - 1);
+	return (status);
+}
+
+/*
+We execute at loop until proc argc -3  because argc -2 is the last one
+and we have to redirect output to file and argc -1 is the output file
+*/
+int	main(int argc, char **argv, char **envp)
+{
+	t_fds	fds;
+	t_env	env;
+	int		status;
+
+	if (argc >= 5)
+	{
+		fds.in = ft_file_open_input(argv);
+		fds.out = ft_file_open_output(argv, argc);
+		ft_fd_check(fds.in, fds.out);
+		ft_fd_dups(fds.in, fds.out);
+		env = ft_env_new(envp);
+		status = ft_main_exec_cmds(argv, argc, fds, env);
+		ft_main_free_resources(fds.in, fds.out, env, NULL);
+		exit (status);
+	}
+	else
+		ft_error_print_str_and_exit("Invalid number of arguments.", \
+			EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+/*
 int	main(int argc, char **argv, char **envp)
 {
 	int		fdin;
@@ -74,21 +115,28 @@ int	main(int argc, char **argv, char **envp)
 	t_env	env;
 	int		status;
 
-	if (argc > 5)
+	if (argc >= 5)
 	{
-		fdin = ft_file_open(argv[1], INFILE, NULL);
-		fdout = ft_file_open(argv[argc - 1], OUTFILE, argv[1]);
-		ft_main_check_fds(fdin, fdout);
-		ft_main_dups(fdin, fdout);
+		fdin = ft_file_open_input(argv);
+		fdout = ft_file_open_output(argv, argc);
+		ft_fd_check(fdin, fdout);
+		ft_fd_dups(fdin, fdout);
 		env = ft_env_new(envp);
-		status = ft_main_execute_pipe(argv, env, 3, argc - 2);
+		status = ft_main_execute_pipe(argv, env, \
+					ft_main_get_first_cmd_pos(argv), argc - 2);
 		if (status != 0)
 		{
 			ft_main_free_resources(fdin, fdout, env, argv[argc - 1]);
-			exit(EXIT_FAILURE);
+			exit(status);
 		}
 		status = ft_exec_redir_and_cmd(argv[argc - 2], env, fdout);
-		status = ft_parent_get_last_child_status(argc - 4);
+		if (status != 0)
+		{
+			ft_main_free_resources(fdin, fdout, env, argv[argc - 1]);
+			exit(status);
+		}
+		status = ft_parent_get_last_child_status(argc - \
+					ft_main_get_first_cmd_pos(argv) - 1);
 		ft_main_free_resources(fdin, fdout, env, NULL);
 		exit (status);
 	}
@@ -97,3 +145,4 @@ int	main(int argc, char **argv, char **envp)
 			EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+*/
