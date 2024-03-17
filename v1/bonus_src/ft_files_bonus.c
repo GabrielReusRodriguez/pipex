@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_files_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: greus-ro <greus-ro@student.42.fr>          +#+  +:+       +#+        */
+/*   By: greus-ro <greus-ro@student.42barcel>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 21:38:32 by greus-ro          #+#    #+#             */
-/*   Updated: 2024/03/16 22:26:21 by greus-ro         ###   ########.fr       */
+/*   Updated: 2024/03/17 01:27:28 by greus-ro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	ft_file_open_input(char **argv)
 	{
 		delimiter = ft_strjoin(argv[2], "\n");
 		fdin = ft_file_read_stdin(delimiter);
+		free (delimiter);
 	}
 	else
 		fdin = ft_file_open(argv[1], INFILE, NULL);
